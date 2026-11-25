@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import themes from 'themes/index';
 import { browseDirectory } from 'providers/ReduxStore/slices/collections/actions';
 import { createApiSpecFile } from 'providers/ReduxStore/slices/apiSpec';
-import { exportApiSpec } from 'utils/exporters/openapi-spec';
+import { exportApiSpec, serializeOpenApiSpec } from 'utils/exporters/openapi-spec';
 import { fetchAndValidateApiSpecFromUrl } from 'utils/importers/common';
 import useDefaultApiSpecLocation from 'hooks/useDefaultApiSpecLocation';
 import toast from 'react-hot-toast';
@@ -35,7 +35,8 @@ jest.mock('utils/importers/common', () => ({
 }));
 
 jest.mock('utils/exporters/openapi-spec', () => ({
-  exportApiSpec: jest.fn(() => ({ content: 'openapi: 3.0.0' }))
+  exportApiSpec: jest.fn(() => ({ spec: { openapi: '3.0.0' }, warnings: [] })),
+  serializeOpenApiSpec: jest.fn(() => 'openapi: 3.0.0')
 }));
 
 jest.mock('hooks/useDefaultApiSpecLocation', () => jest.fn(() => '/home/dev/workspaces/team/apispec'));
@@ -354,10 +355,8 @@ describe('CreateApiSpec — collection source', () => {
     await user.click(screen.getByText('Create'));
 
     await waitFor(() => expect(exportApiSpec).toHaveBeenCalledTimes(1));
-    expect(exportApiSpec).toHaveBeenCalledWith(expect.objectContaining({
-      name: 'Billing- v2',
-      items: [{ name: 'list invoices' }]
-    }));
+    expect(exportApiSpec).toHaveBeenCalledWith('Billing- v2', [{ name: 'list invoices' }], expect.anything(), expect.anything(), expect.anything());
+    expect(serializeOpenApiSpec).toHaveBeenCalledWith({ openapi: '3.0.0' }, 'yaml');
   });
 
   it('does not carry a failed submit\'s errors onto a source or tab just opened', async () => {
@@ -771,7 +770,7 @@ describe('CreateApiSpec — each source keeps its own data', () => {
     await user.click(screen.getByText('Create'));
 
     await waitFor(() => expect(createApiSpecFile).toHaveBeenCalledWith('Petstore.yaml', DEFAULT_LOCATION, 'openapi: 3.0.0'));
-    expect(exportApiSpec).toHaveBeenCalledWith(expect.objectContaining({ items: [{ name: 'get pet' }] }));
+    expect(exportApiSpec).toHaveBeenCalledWith(expect.anything(), [{ name: 'get pet' }], expect.anything(), expect.anything(), expect.anything());
   });
 
   it('creates from the browsed folder on the file system tab, not the workspace pick', async () => {
@@ -788,6 +787,6 @@ describe('CreateApiSpec — each source keeps its own data', () => {
     await user.click(screen.getByText('Create'));
 
     await waitFor(() => expect(createApiSpecFile).toHaveBeenCalledWith('outside-collection.yaml', DEFAULT_LOCATION, 'openapi: 3.0.0'));
-    expect(exportApiSpec).toHaveBeenCalledWith(expect.objectContaining({ items: [{ name: 'ping' }] }));
+    expect(exportApiSpec).toHaveBeenCalledWith(expect.anything(), [{ name: 'ping' }], expect.anything(), expect.anything(), expect.anything());
   });
 });

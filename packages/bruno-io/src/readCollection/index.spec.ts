@@ -1,38 +1,38 @@
-const fs = require('node:fs');
-const os = require('node:os');
-const path = require('node:path');
-const { stringifyRequest, stringifyEnvironment, stringifyCollection } = require('@usebruno/filestore');
-const { readCollectionForApiSpec } = require('./collection-reader');
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { stringifyRequest, stringifyEnvironment, stringifyCollection, type CollectionFormat } from '@usebruno/filestore';
+import { readCollection } from './index';
 
-const httpItem = (name, url) => ({
+const httpItem = (name: string, url: string): any => ({
   type: 'http-request',
   name,
   seq: 1,
   request: { method: 'GET', url, headers: [], params: [], body: { mode: 'none' }, auth: { mode: 'none' } }
 });
 
-const gqlItem = (name, url, query) => ({
+const gqlItem = (name: string, url: string, query: string): any => ({
   type: 'graphql-request',
   name,
   seq: 1,
   request: { method: 'POST', url, headers: [], params: [], body: { mode: 'graphql', graphql: { query, variables: '' } }, auth: { mode: 'none' } }
 });
 
-const envObj = (name, variables) => ({ name, variables });
+const envObj = (name: string, variables: Record<string, unknown>[]): any => ({ name, variables });
 
-const tmpDirs = [];
-const mkTmp = (tag) => {
+const tmpDirs: string[] = [];
+const mkTmp = (tag: string): string => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `apispec-${tag}-`));
   tmpDirs.push(dir);
   return dir;
 };
-const writeFile = (dir, rel, content) => {
+const writeFile = (dir: string, rel: string, content: string): void => {
   const full = path.join(dir, rel);
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, content);
 };
 
-const mkCollection = (tag) => {
+const mkCollection = (tag: string): string => {
   const dir = mkTmp(tag);
   writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'MyCollection' }));
   return dir;
@@ -42,14 +42,14 @@ afterAll(() => {
   tmpDirs.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }));
 });
 
-describe.each(['bru', 'yml'])('readCollectionForApiSpec: %s collections', (format) => {
+describe.each<CollectionFormat>(['bru', 'yml'])('readCollection: %s collections', (format) => {
   const ext = format === 'yml' ? 'yml' : 'bru';
-  let result;
+  let result: Awaited<ReturnType<typeof readCollection>>;
 
   beforeAll(async () => {
     const dir = mkTmp(format);
     if (format === 'yml') {
-      writeFile(dir, 'opencollection.yml', stringifyCollection({}, { name: 'MyCollection', version: '1' }));
+      writeFile(dir, 'opencollection.yml', stringifyCollection({} as any, { name: 'MyCollection', version: '1' }));
     } else {
       writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'MyCollection' }));
     }
@@ -58,7 +58,7 @@ describe.each(['bru', 'yml'])('readCollectionForApiSpec: %s collections', (forma
     writeFile(dir, path.join('FolderA', `GqlUsers.${ext}`), stringifyRequest(gqlItem('GqlUsers', 'https://api.test/graphql', '{ users { id } }'), { format }));
     writeFile(dir, path.join('environments', `Local.${ext}`), stringifyEnvironment(envObj('Local', [{ name: 'baseUrl', value: 'https://local.test', enabled: true, secret: false, type: 'text' }]), { format }));
     writeFile(dir, path.join('environments', `Prod.${ext}`), stringifyEnvironment(envObj('Prod', [{ name: 'baseUrl', value: 'https://prod.test', enabled: true, secret: false, type: 'text' }]), { format }));
-    result = await readCollectionForApiSpec(dir);
+    result = await readCollection(dir);
   });
 
   it('reads every http and graphql request, including nested folders', () => {
@@ -76,26 +76,26 @@ describe.each(['bru', 'yml'])('readCollectionForApiSpec: %s collections', (forma
   });
 
   it('keeps the graphql query intact in the parsed request body', () => {
-    const gql = result.requests.find((f) => f.name === 'GqlUsers');
+    const gql: any = result.requests.find((f) => f.name === 'GqlUsers');
     expect(gql.request.body.mode).toBe('graphql');
     expect(gql.request.body.graphql.query).toContain('users');
   });
 
   it('loads every environment with its own variables', () => {
     expect(Object.keys(result.envVariables).sort()).toEqual(['Local', 'Prod']);
-    const local = result.envVariables.Local.find((v) => v.name === 'baseUrl');
+    const local: any = result.envVariables.Local.find((v) => v.name === 'baseUrl');
     expect(local.value).toBe('https://local.test');
-    const prod = result.envVariables.Prod.find((v) => v.name === 'baseUrl');
+    const prod: any = result.envVariables.Prod.find((v) => v.name === 'baseUrl');
     expect(prod.value).toBe('https://prod.test');
   });
 });
 
-describe('readCollectionForApiSpec: robustness', () => {
+describe('readCollection: robustness', () => {
   it('skips an unparseable request file instead of failing the whole load, and reports it in skipped', async () => {
     const dir = mkCollection('bad');
     writeFile(dir, 'Good.bru', stringifyRequest(httpItem('Good', 'https://api.test/ok'), { format: 'bru' }));
     writeFile(dir, 'Broken.bru', 'not valid bru at all {{{{');
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.requests.map((f) => f.name)).toEqual(['Good']);
     expect(result.skipped).toEqual(['Broken.bru']);
   });
@@ -106,16 +106,16 @@ describe('readCollectionForApiSpec: robustness', () => {
     writeFile(dir, path.join('locked', 'Hidden.bru'), stringifyRequest(httpItem('Hidden', 'https://api.test/hidden'), { format: 'bru' }));
     const lockedDir = path.join(dir, 'locked');
     const realReaddir = fs.readdirSync;
-    const spy = jest.spyOn(fs, 'readdirSync').mockImplementation((p, opts) => {
+    const spy = jest.spyOn(fs, 'readdirSync').mockImplementation(((p: fs.PathLike, opts: any) => {
       if (p === lockedDir) {
-        const err = new Error('EACCES: permission denied');
+        const err: any = new Error('EACCES: permission denied');
         err.code = 'EACCES';
         throw err;
       }
       return realReaddir(p, opts);
-    });
+    }) as typeof fs.readdirSync);
     try {
-      await expect(readCollectionForApiSpec(dir)).rejects.toThrow('EACCES');
+      await expect(readCollection(dir)).rejects.toThrow('EACCES');
     } finally {
       spy.mockRestore();
     }
@@ -125,16 +125,16 @@ describe('readCollectionForApiSpec: robustness', () => {
     const dir = mkCollection('noaccess-root');
     writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', 'https://api.test/ok'), { format: 'bru' }));
     const realReaddir = fs.readdirSync;
-    const spy = jest.spyOn(fs, 'readdirSync').mockImplementation((p, opts) => {
+    const spy = jest.spyOn(fs, 'readdirSync').mockImplementation(((p: fs.PathLike, opts: any) => {
       if (p === dir) {
-        const err = new Error('EACCES: permission denied');
+        const err: any = new Error('EACCES: permission denied');
         err.code = 'EACCES';
         throw err;
       }
       return realReaddir(p, opts);
-    });
+    }) as typeof fs.readdirSync);
     try {
-      await expect(readCollectionForApiSpec(dir)).rejects.toThrow('EACCES');
+      await expect(readCollection(dir)).rejects.toThrow('EACCES');
     } finally {
       spy.mockRestore();
     }
@@ -144,12 +144,12 @@ describe('readCollectionForApiSpec: robustness', () => {
     const dir = mkCollection('bad-env');
     writeFile(dir, path.join('environments', 'Broken.bru'), '@@@ not valid bru @@@\n');
     writeFile(dir, path.join('environments', 'Good.bru'), stringifyEnvironment(envObj('Good', [{ name: 'baseUrl', value: 'https://x', enabled: true, secret: false, type: 'text' }]), { format: 'bru' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(Object.keys(result.envVariables)).toEqual(['Good']);
     expect(result.skipped).toEqual([path.join('environments', 'Broken.bru')]);
   });
 
-  it.each(['bru', 'yml'])('%s: a secret variable comes back empty while the ordinary ones keep their values, so a password can never end up in the spec file', async (format) => {
+  it.each<CollectionFormat>(['bru', 'yml'])('%s: a secret variable comes back empty while the ordinary ones keep their values, so a password can never end up in the spec file', async (format) => {
     const ext = format === 'yml' ? 'yml' : 'bru';
     const dir = mkCollection(`secret-${format}`);
     writeFile(
@@ -164,14 +164,14 @@ describe('readCollectionForApiSpec: robustness', () => {
       )
     );
 
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     const byName = Object.fromEntries(result.envVariables.Local.map((v) => [v.name, v.value]));
 
     expect(byName.token).toBe('');
     expect(byName.baseUrl).toBe('https://local.test');
   });
 
-  it.each(['bru', 'yml'])('%s: marks which variables are secret, so the caller can tell a secret environment apart', async (format) => {
+  it.each<CollectionFormat>(['bru', 'yml'])('%s: marks which variables are secret, so the caller can tell a secret environment apart', async (format) => {
     const ext = format === 'yml' ? 'yml' : 'bru';
     const dir = mkCollection(`secret-flag-${format}`);
     writeFile(
@@ -186,42 +186,42 @@ describe('readCollectionForApiSpec: robustness', () => {
       )
     );
 
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     const byName = Object.fromEntries(result.envVariables.Local.map((v) => [v.name, v.secret]));
 
     expect(byName).toEqual({ token: true, baseUrl: false });
   });
 });
 
-describe('readCollectionForApiSpec: yml collection config (opencollection.yml)', () => {
+describe('readCollection: yml collection config (opencollection.yml)', () => {
   it('honors the ignore patterns from opencollection.yml for a yml collection', async () => {
     const dir = mkTmp('ocignore');
-    writeFile(dir, 'opencollection.yml', stringifyCollection({}, { name: 'YmlColl', version: '1', ignore: ['drafts/**'] }));
+    writeFile(dir, 'opencollection.yml', stringifyCollection({} as any, { name: 'YmlColl', version: '1', ignore: ['drafts/**'] }));
     writeFile(dir, 'GetUsers.yml', stringifyRequest(httpItem('GetUsers', 'https://api.test/users'), { format: 'yml' }));
     writeFile(dir, path.join('drafts', 'Scratch.yml'), stringifyRequest(httpItem('Scratch', 'https://api.test/scratch'), { format: 'yml' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
   });
 });
 
-describe('readCollectionForApiSpec: .yaml extension environments', () => {
+describe('readCollection: .yaml extension environments', () => {
   it('handles a .yaml extension too, storing the environment under its name', async () => {
     const dir = mkCollection('yaml-env');
     writeFile(dir, path.join('environments', 'Local.yaml'), stringifyEnvironment(envObj('Local', [{ name: 'baseUrl', value: 'https://local.test', enabled: true, secret: false, type: 'text' }]), { format: 'yml' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(Object.keys(result.envVariables)).toEqual(['Local']);
   });
 });
 
-describe('readCollectionForApiSpec: collection-level variables', () => {
+describe('readCollection: collection-level variables', () => {
   it('extracts enabled collection variables from the collection root so the exporter can resolve them', async () => {
     const dir = mkTmp('collvars');
     writeFile(dir, 'opencollection.yml', stringifyCollection(
-      { request: { vars: { req: [{ name: 'baseUrl', value: 'https://coll.test', enabled: true, type: 'text' }] } } },
+      { request: { vars: { req: [{ name: 'baseUrl', value: 'https://coll.test', enabled: true, type: 'text' }] } } } as any,
       { name: 'C', version: '1' }
     ));
     writeFile(dir, 'GetUsers.yml', stringifyRequest(httpItem('GetUsers', '{{baseUrl}}/users'), { format: 'yml' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.collectionVariables).toEqual({ baseUrl: 'https://coll.test' });
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
   });
@@ -231,7 +231,7 @@ describe('readCollectionForApiSpec: collection-level variables', () => {
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'BruColl' }));
     writeFile(dir, 'collection.bru', 'vars:pre-request {\n  baseUrl: https://coll.test\n}\n');
     writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', '{{baseUrl}}/users'), { format: 'bru' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.collectionVariables).toEqual({ baseUrl: 'https://coll.test' });
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
   });
@@ -242,20 +242,20 @@ describe('readCollectionForApiSpec: collection-level variables', () => {
       { request: { vars: { req: [
         { name: 'baseUrl', value: 'https://coll.test', enabled: true, type: 'text' },
         { name: 'oldUrl', value: 'https://old.test', enabled: false, type: 'text' }
-      ] } } },
+      ] } } } as any,
       { name: 'C', version: '1' }
     ));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.collectionVariables).toEqual({ baseUrl: 'https://coll.test' });
   });
 });
 
-describe('readCollectionForApiSpec: config edge cases', () => {
+describe('readCollection: config edge cases', () => {
   it('prefers opencollection.yml over bruno.json when both exist', async () => {
     const dir = mkTmp('both-configs');
-    writeFile(dir, 'opencollection.yml', stringifyCollection({}, { name: 'FromYml', version: '1' }));
+    writeFile(dir, 'opencollection.yml', stringifyCollection({} as any, { name: 'FromYml', version: '1' }));
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'FromJson' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.configFile).toBe('opencollection.yml');
   });
 
@@ -263,7 +263,7 @@ describe('readCollectionForApiSpec: config edge cases', () => {
     const dir = mkTmp('bad-config');
     writeFile(dir, 'opencollection.yml', ':: not valid yaml ::\n\t');
     writeFile(dir, 'GetUsers.yml', stringifyRequest(httpItem('GetUsers', 'https://api.test/users'), { format: 'yml' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
     expect(result.skipped).toEqual(['opencollection.yml']);
   });
@@ -272,7 +272,7 @@ describe('readCollectionForApiSpec: config edge cases', () => {
     const dir = mkTmp('bad-json');
     writeFile(dir, 'bruno.json', '{ not valid json');
     writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', 'https://api.test/users'), { format: 'bru' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.skipped).toEqual(['bruno.json']);
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
   });
@@ -280,7 +280,7 @@ describe('readCollectionForApiSpec: config edge cases', () => {
   it('leaves skipped empty when the config is fine but carries no collection config', async () => {
     const dir = mkTmp('ok-config');
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'Fine' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.skipped).toEqual([]);
   });
 
@@ -289,7 +289,7 @@ describe('readCollectionForApiSpec: config edge cases', () => {
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'BruColl' }));
     writeFile(dir, 'collection.bru', 'vars:pre-request {{{ broken');
     writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', '{{baseUrl}}/users'), { format: 'bru' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.skipped).toEqual(['collection.bru']);
     expect(result.collectionVariables).toEqual({});
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
@@ -298,7 +298,7 @@ describe('readCollectionForApiSpec: config edge cases', () => {
   it('reads a real collection that has no requests in it and simply finds nothing to export', async () => {
     const dir = mkTmp('empty');
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'Empty' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.requests).toEqual([]);
     expect(result.envVariables).toEqual({});
     expect(result.collectionVariables).toEqual({});
@@ -306,37 +306,53 @@ describe('readCollectionForApiSpec: config edge cases', () => {
   });
 });
 
-describe('readCollectionForApiSpec: folders that are not Bruno collections', () => {
+describe('readCollection: folders that are not Bruno collections', () => {
   it('refuses a folder that does not contain a Bruno collection file', async () => {
     const dir = mkTmp('not-a-collection');
     writeFile(dir, 'readme.txt', 'i am not a collection');
-    await expect(readCollectionForApiSpec(dir)).rejects.toThrow('No bruno.json or opencollection.yml found');
+    await expect(readCollection(dir)).rejects.toThrow('No bruno.json or opencollection.yml found');
   });
 
   it('refuses a completely empty folder', async () => {
-    await expect(readCollectionForApiSpec(mkTmp('bare'))).rejects.toThrow('No bruno.json or opencollection.yml found');
+    await expect(readCollection(mkTmp('bare'))).rejects.toThrow('No bruno.json or opencollection.yml found');
   });
 
   it('refuses a folder that does not exist, rather than pretending the collection was empty', async () => {
     const missing = path.join(mkTmp('missing'), 'gone');
-    await expect(readCollectionForApiSpec(missing)).rejects.toThrow('No bruno.json or opencollection.yml found');
+    await expect(readCollection(missing)).rejects.toThrow('No bruno.json or opencollection.yml found');
   });
 
   it('says which Bruno collection file it found, so the app can tell a real collection from any other folder', async () => {
     const ymlDir = mkTmp('marker-yml');
-    writeFile(ymlDir, 'opencollection.yml', stringifyCollection({}, { name: 'FromYml', version: '1' }));
-    expect((await readCollectionForApiSpec(ymlDir)).configFile).toBe('opencollection.yml');
+    writeFile(ymlDir, 'opencollection.yml', stringifyCollection({} as any, { name: 'FromYml', version: '1' }));
+    expect((await readCollection(ymlDir)).configFile).toBe('opencollection.yml');
 
     const jsonDir = mkTmp('marker-json');
     writeFile(jsonDir, 'bruno.json', JSON.stringify({ version: '1', name: 'FromJson' }));
-    expect((await readCollectionForApiSpec(jsonDir)).configFile).toBe('bruno.json');
+    expect((await readCollection(jsonDir)).configFile).toBe('bruno.json');
   });
 
   it('accepts a collection that uses the older bruno.json file', async () => {
     const dir = mkTmp('json-only');
     writeFile(dir, 'bruno.json', JSON.stringify({ version: '1', name: 'JsonOnly' }));
     writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', 'https://api.test/ok'), { format: 'bru' }));
-    const result = await readCollectionForApiSpec(dir);
+    const result = await readCollection(dir);
     expect(result.requests.map((f) => f.name)).toEqual(['GetUsers']);
+  });
+});
+
+describe('readCollection: missing collection config', () => {
+  it('throws naming the folder when neither bruno.json nor opencollection.yml exists', async () => {
+    const dir = mkTmp('no-config');
+    writeFile(dir, 'GetUsers.bru', stringifyRequest(httpItem('GetUsers', 'https://api.test/ok'), { format: 'bru' }));
+    await expect(readCollection(dir)).rejects.toThrow(`No bruno.json or opencollection.yml found in ${dir}`);
+  });
+});
+
+describe('readCollection: return shape', () => {
+  it('returns exactly configFile, requests, envVariables, collectionVariables and skipped', async () => {
+    const dir = mkCollection('shape');
+    const result = await readCollection(dir);
+    expect(Object.keys(result)).toEqual(['configFile', 'requests', 'envVariables', 'collectionVariables', 'skipped']);
   });
 });

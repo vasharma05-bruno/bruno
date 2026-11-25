@@ -1,10 +1,6 @@
 const path = require('node:path');
-const {
-  posixifyPath,
-  idForAbsolutePath,
-  uidForSeed,
-  defaultClassify
-} = require('../../utils/mount');
+const { posixifyPath, defaultClassify } = require('@usebruno/io');
+const { idForAbsolutePath, uidForSeed } = require('../../utils/mount');
 const { sizeInMB } = require('../../utils/filesystem');
 
 const REQUEST_EXT_RE = /\.(bru|yml|yaml)$/i;

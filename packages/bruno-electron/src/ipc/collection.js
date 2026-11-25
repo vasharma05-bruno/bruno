@@ -28,7 +28,7 @@ const { cookiesStore } = require('../store/cookies');
 const { parseLargeRequestWithRedaction } = require('../utils/parse');
 const { getWsClient } = require('../ipc/network/ws-event-handlers');
 const { hasSubDirectories } = require('../utils/filesystem');
-const { readCollectionForApiSpec } = require('../utils/collection-reader');
+const { readCollection } = require('@usebruno/io');
 const { exportCollectionYaml } = require('./collection-export');
 const { transformProxyConfig } = require('@usebruno/requests');
 
@@ -2570,7 +2570,7 @@ const registerRendererEventHandlers = (mainWindow, watcher) => {
       throw new Error(`Collection path does not exist: ${collectionPath}`);
     }
 
-    return readCollectionForApiSpec(collectionPath);
+    return readCollection(collectionPath);
   });
 
   ipcMain.handle('renderer:export-collection-zip', async (event, collectionPath, collectionName) => {

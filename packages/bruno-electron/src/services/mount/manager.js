@@ -3,7 +3,8 @@ const path = require('node:path');
 const { JobType, getPool, destroyPool } = require('../pool');
 const { FileIndex } = require('./file-index');
 const { buildTree } = require('./tree-builder');
-const { defaultClassify, uidForSeed } = require('../../utils/mount');
+const { defaultClassify } = require('@usebruno/io');
+const { uidForSeed } = require('../../utils/mount');
 const { getWsClient } = require('../../ipc/network/ws-event-handlers');
 const { transientManager } = require('../transient');
 
