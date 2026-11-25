@@ -1,15 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { getStatements, transaction } = require('../sqlite');
-const {
-  hashFile,
-  hashFileAsync,
-  posixifyPath,
-  idForAbsolutePath,
-  resolveDenylist,
-  isDenied,
-  walk
-} = require('../../utils/mount');
+const { posixifyPath, resolveDenylist, isDenied, walk } = require('@usebruno/io');
+const { hashFile, hashFileAsync, idForAbsolutePath } = require('../../utils/mount');
 
 // TODO: Check for trigger (ON UPDATE) and then see if we can use that to update updated_at
 

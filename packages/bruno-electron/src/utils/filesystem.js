@@ -7,6 +7,7 @@ const os = require('os');
 // Single shared implementation lives in @usebruno/common; re-exported below so
 // `require('../utils/filesystem')` consumers keep working unchanged.
 const { sanitizeName, validateName, generateUniqueName } = require('@usebruno/common').utils;
+const { posixifyPath } = require('@usebruno/io');
 
 const DEFAULT_GITIGNORE = [
   '# Secrets',
@@ -743,8 +744,6 @@ const scanForBrunoFiles = async (dir) => {
   scanDir(dir);
   return brunoFolders;
 };
-
-const posixifyPath = (p) => (p ? p.replace(/\\/g, '/') : p);
 
 module.exports = {
   DEFAULT_GITIGNORE,

@@ -1,4 +1,7 @@
-const { isDenied, resolveDenylist } = require('./mount');
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { isDenied, resolveDenylist, walk } from './index';
 
 describe('mount denylist', () => {
   test('plain folder paths deny the folder and its descendants without matching prefixes', () => {
@@ -43,10 +46,6 @@ describe('mount denylist', () => {
   });
 
   test('walk prunes plain ignored directories without descending', () => {
-    const fs = require('node:fs');
-    const os = require('node:os');
-    const path = require('node:path');
-    const { walk } = require('./mount');
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bruno-walk-deny-'));
 
     try {
@@ -57,15 +56,11 @@ describe('mount denylist', () => {
       const files = walk(root, resolveDenylist(['hidden'])).map((f) => f.relativePath);
       expect(files).toEqual(['visible.bru']);
     } finally {
-      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
     }
   });
 
   test('walk still lists files under a directory that only matches a non-cascading glob', () => {
-    const fs = require('node:fs');
-    const os = require('node:os');
-    const path = require('node:path');
-    const { walk } = require('./mount');
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bruno-walk-glob-'));
 
     try {
@@ -79,7 +74,7 @@ describe('mount denylist', () => {
         'visible.bru'
       ].sort());
     } finally {
-      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
     }
   });
 });

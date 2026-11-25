@@ -1,0 +1,2677 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with no environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_bru
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_bru
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.us-east-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_bru
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: https://api.test
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with no environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with the Local environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_bru
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_bru
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.us-east-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_bru
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: http://localhost:3000
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with the Local environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with the Prod environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_bru
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_bru
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_bru
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_bru
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_bru
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_bru
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.eu-west-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_bru
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_bru
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a bru collection exports the fixture collection with the Prod environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with no environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_yml
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_yml
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.us-east-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_yml
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: https://api.test
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with no environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with the Local environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_yml
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_yml
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.us-east-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_yml
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: http://localhost:3000
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with the Local environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with the Prod environment: content 1`] = `
+"openapi: 3.0.0
+info:
+  title: Api Spec Fixture
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get Users
+      operationId: home_dev_api_spec_fixture_get_users_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting at 1
+          required: true
+          example: '1'
+        - name: X-Api-Version
+          in: header
+          description: Api version to use
+          required: true
+          example: '{{version}}'
+      x-bruno-variants:
+        - summary: List Active Users
+          operationId: home_dev_api_spec_fixture_users_list_active_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: active
+              in: query
+              description: ''
+              required: true
+              example: 'true'
+        - summary: Search Users
+          operationId: home_dev_api_spec_fixture_users_search_users_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: q
+              in: query
+              description: ''
+              required: true
+              example: ada
+    post:
+      summary: Create User
+      operationId: home_dev_api_spec_fixture_users_create_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/create_user'
+      security:
+        create_user: []
+  /health:
+    get:
+      summary: Health
+      operationId: home_dev_api_spec_fixture_health_yml
+      description: ''
+      tags:
+        - ''
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: https://status.test
+  /users/import:
+    post:
+      summary: Import Users
+      operationId: home_dev_api_spec_fixture_users_import_users_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/json
+      requestBody:
+        $ref: '#/components/requestBodies/import_users'
+  /users/{id}:
+    put:
+      summary: Update User
+      operationId: home_dev_api_spec_fixture_users_admin_update_user_yml
+      description: ''
+      tags:
+        - users
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: application/xml
+        - name: id
+          in: path
+          required: true
+          example: '42'
+      requestBody:
+        $ref: '#/components/requestBodies/update_user'
+      security:
+        update_user: []
+      x-bruno-variants:
+        - summary: Replace User
+          operationId: home_dev_api_spec_fixture_users_admin_replace_user_yml
+          description: ''
+          tags:
+            - users
+          responses:
+            '200':
+              description: ''
+          parameters:
+            - name: Content-Type
+              in: header
+              description: ''
+              required: true
+              example: application/xml
+            - name: id
+              in: path
+              required: true
+              example: '43'
+  /graphql:
+    post:
+      summary: Query Users
+      operationId: home_dev_api_spec_fixture_graphql_query_users_yml
+      description: ''
+      tags:
+        - graphql
+      responses:
+        '200':
+          description: ''
+  /auth/me:
+    get:
+      summary: OAuth Login
+      operationId: home_dev_api_spec_fixture_auth_oauth_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        oauth_login: []
+  /auth/password:
+    post:
+      summary: Password Login
+      operationId: home_dev_api_spec_fixture_auth_password_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        password_login: []
+  /auth/service:
+    post:
+      summary: Service Token
+      operationId: home_dev_api_spec_fixture_auth_service_token_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        service_token: []
+  /auth/digest:
+    get:
+      summary: Digest Login
+      operationId: home_dev_api_spec_fixture_auth_digest_login_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        digest_login: []
+  /bucket/object.txt:
+    get:
+      summary: Get Object
+      operationId: home_dev_api_spec_fixture_storage_get_object_yml
+      description: ''
+      tags:
+        - storage
+      responses:
+        '200':
+          description: ''
+      security:
+        get_object: []
+      servers:
+        - url: https://s3.eu-west-1.amazonaws.test
+  /uploads/avatar:
+    post:
+      summary: Upload Avatar
+      operationId: home_dev_api_spec_fixture_uploads_upload_avatar_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/upload_avatar'
+  /uploads/form:
+    post:
+      summary: Submit Form
+      operationId: home_dev_api_spec_fixture_uploads_submit_form_yml
+      description: ''
+      tags:
+        - uploads
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/submit_form'
+  /{version}/notes:
+    post:
+      summary: Create Note
+      operationId: home_dev_api_spec_fixture_notes_nested_create_note_yml
+      description: ''
+      tags:
+        - notes
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          description: ''
+          required: true
+          example: text/plain
+        - name: version
+          in: path
+          required: true
+          example: '{{version}}'
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+servers:
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Base Server
+  - url: http://localhost:3000
+    description: Local
+  - url: '{protocol}://prod.test'
+    variables:
+      protocol:
+        default: https
+    description: Prod
+components:
+  schemas:
+    create_user:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        admin:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+        address:
+          type: object
+          properties:
+            city:
+              type: string
+      example:
+        name: Ada
+        email: ada@example.test
+        age: 36
+        admin: false
+        tags:
+          - beta
+        address:
+          city: London
+    import_users:
+      type: object
+      properties: {}
+    update_user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+            role:
+              type: string
+      example:
+        user:
+          name: Ada
+          role: admin
+    upload_avatar:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Owner of the avatar
+        file:
+          type: array
+          items:
+            type: string
+          properties:
+            '0':
+              type: string
+    submit_form:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Form title
+        draft:
+          type: string
+  requestBodies:
+    create_user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create_user'
+      description: ''
+      required: true
+    import_users:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/import_users'
+      description: ''
+      required: true
+    update_user:
+      content:
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/update_user'
+      description: ''
+      required: true
+    upload_avatar:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/upload_avatar'
+      description: ''
+      required: true
+    submit_form:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/submit_form'
+      description: ''
+      required: true
+  securitySchemes:
+    create_user:
+      type: http
+      scheme: bearer
+    update_user:
+      type: http
+      scheme: basic
+    oauth_login:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.test/authorize
+          tokenUrl: https://auth.test/token
+          scopes:
+            read: ''
+    password_login:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes:
+            write: ''
+    service_token:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.test/token
+          scopes: {}
+    digest_login:
+      type: digest
+      scheme: digest
+      description: Digest Authentication
+    get_object:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+"
+`;
+
+exports[`exportApiSpec snapshot a yml collection exports the fixture collection with the Prod environment: warnings 1`] = `
+[
+  {
+    "itemName": "Import Users",
+    "message": "Failed to parse JSON in request body: Unexpected end of JSON input",
+  },
+  {
+    "itemName": "Replace User",
+    "message": "Failed to parse XML in request body: Unhandled error. (Error: Unexpected close tag
+Line: 1
+Column: 18
+Char: >",
+  },
+]
+`;
